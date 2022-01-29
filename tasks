@@ -1,0 +1,33 @@
+done
+// CU -> File file = new  File("D:\\projects\\passmanager\\"+user+".pm"); // store user data in txt with user name in folder with username
+
+// DM -> // builder data model when create user
+
+//LI -> //TODO in login verify the data and compare it with input
+
+// LI -> dataModel = new ModelBuilder().site(site).email(email).userName(user).logname(userProfileData.get("LogName")).logpass(userProfileData.get("LogPass")).build();
+
+// LI -> //TODO remove the past site file - copying data(user and mail) and change pass and site name 
+
+// LI -> read profile - log user
+
+// LI -> // personal profile map - make other map for site
+
+// LI -> // add site - search site - modify site - remove site menu (switch case)
+
+// LI -> // can't read if the log pass wrong
+
+// CU -> //TODO all main info in logfile , password for sites in a site name file//TODO all main info in logfile , password for sites in a site name file
+
+		 // String pass = PassGenerator.generator(site,user,email,date);
+		// System.out.println(pass);
+		
+//TODO add main data for login - other files for sites
+// File file = new File(path+"\\"+dataModel.getUserName()+".pm"); // add passwords to it
+
+//TODO check for sites
+
+LI -> 
+// +"\\"+dataModel.getLogname()+".pm"
+// delete folder
+
