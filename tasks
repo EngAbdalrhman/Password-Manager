@@ -31,3 +31,22 @@ LI ->
 // +"\\"+dataModel.getLogname()+".pm"
 // delete folder
 
+decry -> int length = part1.length() + part2.length();
+//		for (int i = 0; i < length/2; i++) {
+//			ctxt += part1.charAt(i);
+//		}
+
+//		for (int i = length-1 ; i >= length/2; i--) {
+//			ctxt += part2.charAt(i);
+//		}
+
+ if (Paths.get(arg0))
+ File.separator
+ CU -> // check if file exist
+ // if user exist > return false;
+  if(log.exists())
+	    	return;
+	
+	//TODO save generated pass in files inside the user folder , encrypted , with some details , could read directly throw the app (decrypted)
+	
+	

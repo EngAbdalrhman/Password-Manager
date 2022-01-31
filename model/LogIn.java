@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
+import passwordmanager.encryption.Encryption;
 import passwordmanager.filecontroler.FileControl;
 import passwordmanager.generate.PassGenerator;
 
@@ -17,7 +18,7 @@ public class LogIn {
 	
 	public static void main(String[] args) {
 		input = new Scanner(System.in);
-		// log in
+		
 		System.out.println("Enter The user");
 		String user = input.nextLine();
 		System.out.println("Enter The password");
@@ -44,6 +45,10 @@ public class LogIn {
 	        File file = new File(path+"\\"+user+".pm");
 	        
 	        userProfileData = FileControl.read(file);
+	        // fix key algorithm
+	        userProfileData.replace("LogName", Encryption.decryption(userProfileData.get("LogName"), 2, -2));
+	        userProfileData.replace("LogPass", Encryption.decryption(userProfileData.get("LogPass"), 2, -2));
+	        
 			if (userProfileData.containsValue(user) && userProfileData.containsValue(password))
 			{
 				authentication = true;
@@ -172,18 +177,25 @@ public class LogIn {
 		String email = input.nextLine(); //TODO check the regex (fast fail)
 		System.out.println("Enter The user");
 		String user = input.nextLine();
-		dataModel.setSite(site);
-		dataModel.setUserName(user);
-		dataModel.setOtherEmail(email);
+		userProfileData.replace("YearOfBirth", Encryption.decryption(userProfileData.get("YearOfBirth"), 2, -2));
 		
 		String pass = PassGenerator.generator(site,user,email,userProfileData.get("YearOfBirth"));
+		dataModel.setSite(site);
+	
+		user = Encryption.encryption(user, 2, -2);
+		email = Encryption.encryption(email, 2, -2);
+		pass = Encryption.encryption(pass, 2, -2);
+		
+		dataModel.setUserName(user);
+		dataModel.setOtherEmail(email);
 		dataModel.setPassword(pass);
 		writeOperation();
 		System.out.println("Done!");
 	}
 	private static  String info() 
-	{
-		String txt = ("Site:" + dataModel.getSite() + "\n");
+	{ // could enc here.
+		String site = Encryption.encryption(dataModel.getSite(), 2, -2);
+		String txt = ("Site:" + site + "\n");
 		txt += ("Email:" + dataModel.getOtherEmail()+ "\n");
 		txt += ("UserName:" + dataModel.getUserName()+ "\n");
 		txt += ("Password:" + dataModel.getPassword()+ "\n");
@@ -215,7 +227,17 @@ public class LogIn {
 		Iterator<String> values = userProfileData.values().iterator();
 		while(keys.hasNext()) 
         {
-        	  System.out.println(keys.next() +":"+ values.next());
+			String key = keys.next();
+			String value = values.next();
+			if(key.equals("LogPass") || key.equals("LogName") )
+				System.out.println(key +":"+ value);
+			else
+			{
+				value = Encryption.decryption(value, 2, -2);
+				userProfileData.replace(key, value);
+				System.out.println(key +":"+ value);
+			}
+
         }
 	}
 	
@@ -226,7 +248,13 @@ public class LogIn {
 		Iterator<String> values = userSiteData.values().iterator();
 		while(keys.hasNext()) 
         {
-        	  System.out.println(keys.next() +":"+ values.next());
+			String key = keys.next();
+			String value = values.next();
+
+			value = Encryption.decryption(value, 2, -2);
+			userProfileData.replace(key, value);
+			System.out.println(key +":"+ value);
+
         }
 	}
 	
