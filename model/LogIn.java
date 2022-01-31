@@ -16,7 +16,7 @@ public class LogIn {
 	static boolean authentication = false;
 	static Scanner input;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) { // change to normal method that call it in the main app
 		input = new Scanner(System.in);
 		
 		System.out.println("Enter The user");
@@ -60,14 +60,16 @@ public class LogIn {
 	
 	static public void menu () 
 	{
+		//Looping menu
 		System.out.println("Choose number for operation..");
 		System.out.println("1. add Site");
 		System.out.println("2. search Site");
 		System.out.println("3. modify Site");
 		System.out.println("4. remove Site");
 		System.out.println("5. View Profile");
-		System.out.println("6. Delete Profile");
-		System.out.println("7. cancel");
+		System.out.println("6. modify Profile");
+		System.out.println("7. Delete Profile");
+		System.out.println("8. cancel");
 		int operation = input.nextInt();
 		input.nextLine();
 		switch(operation) 
@@ -85,13 +87,16 @@ public class LogIn {
 				removeSite();
 			break;
 			case 5 :
-				readProfile();
-			break;
-			case 6 :
-				removeProfile();
+				readProfile(true);
 			break;
 			case 7 :
+				removeProfile();
 			break;
+			case 6 :
+				modifyProfile();
+			break;
+			case 8 :
+				break;
 			default : System.out.println("Not vaild");
 		}
 	}
@@ -118,6 +123,10 @@ public class LogIn {
 		input.nextLine(); // for the bug
 		String pass , user , email;
 		String year = userProfileData.get("YearOfBirth");
+		year = Encryption.decryption(year, 2, -2);
+		userProfileData.replace("YearOfBirth", year);
+		readSiteData(false);
+		
 		switch(operation) 
 		{
 			case 1 : 
@@ -125,29 +134,35 @@ public class LogIn {
 				userSiteData.replace("UserName", user);
 				dataModel.setUserName(user);
 				email = userSiteData.get("Email");
+				email = Encryption.decryption(email, 2, -2);
 				dataModel.setSite(pastSite);
 				dataModel.setOtherEmail(email);
 				pass = PassGenerator.generator(pastSite,user,email,year);
 				dataModel.setPassword(pass);
 				writeOperation();
+				System.out.println("Done.");
 			break;
 			case 2 : 
 				email = input.nextLine();
 				userSiteData.replace("Email", email);
 				dataModel.setOtherEmail(email);
 				user = userSiteData.get("UserName");
+				user = Encryption.decryption(user, 2, -2);
 				dataModel.setUserName(user);
 				dataModel.setSite(pastSite);
 				pass = PassGenerator.generator(pastSite,user,email,year);
 				dataModel.setPassword(pass);
 				writeOperation();
+				System.out.println("Done.");
 			break;
 			case 3 : 
 				String site = input.nextLine();
 				userSiteData.replace("Site", site);
 				dataModel.setSite(site);
 				user = userSiteData.get("UserName");
+				user = Encryption.decryption(user, 2, -2);
 				email = userSiteData.get("Email");
+				email = Encryption.decryption(email, 2, -2);
 				dataModel.setUserName(user);
 				dataModel.setOtherEmail(email);
 				pass = PassGenerator.generator(site,user,email,year);
@@ -158,6 +173,7 @@ public class LogIn {
 				
 				writeOperation();
 				file.delete();
+				System.out.println("Done.");
 			break;
 			default : System.out.println("Wrong Answer");
 		}
@@ -167,7 +183,7 @@ public class LogIn {
 		String site = input.nextLine();
 		dataModel.setSite(site);
 		readOperation ();
-		readSiteData();
+		readSiteData(true);
 	}
 	private static void addSite() 
 	{
@@ -180,12 +196,8 @@ public class LogIn {
 		userProfileData.replace("YearOfBirth", Encryption.decryption(userProfileData.get("YearOfBirth"), 2, -2));
 		
 		String pass = PassGenerator.generator(site,user,email,userProfileData.get("YearOfBirth"));
-		dataModel.setSite(site);
-	
-		user = Encryption.encryption(user, 2, -2);
-		email = Encryption.encryption(email, 2, -2);
-		pass = Encryption.encryption(pass, 2, -2);
 		
+		dataModel.setSite(site);
 		dataModel.setUserName(user);
 		dataModel.setOtherEmail(email);
 		dataModel.setPassword(pass);
@@ -193,12 +205,16 @@ public class LogIn {
 		System.out.println("Done!");
 	}
 	private static  String info() 
-	{ // could enc here.
+	{ 
 		String site = Encryption.encryption(dataModel.getSite(), 2, -2);
+		String user = Encryption.encryption(dataModel.getUserName(), 2, -2);
+		String email = Encryption.encryption(dataModel.getOtherEmail(), 2, -2);
+		String pass = Encryption.encryption(dataModel.getPassword(), 2, -2);
+		
 		String txt = ("Site:" + site + "\n");
-		txt += ("Email:" + dataModel.getOtherEmail()+ "\n");
-		txt += ("UserName:" + dataModel.getUserName()+ "\n");
-		txt += ("Password:" + dataModel.getPassword()+ "\n");
+		txt += ("Email:" + email+ "\n");
+		txt += ("UserName:" + user+ "\n");
+		txt += ("Password:" + pass+ "\n");
 		//TODO add other parameters
 		return txt;
 	}
@@ -221,7 +237,7 @@ public class LogIn {
 		userSiteData = FileControl.read(file);
 	}
 	
-	private static void readProfile() 
+	private static void readProfile(boolean print) 
 	{
 		Iterator<String> keys = userProfileData.keySet().iterator();
 		Iterator<String> values = userProfileData.values().iterator();
@@ -235,13 +251,14 @@ public class LogIn {
 			{
 				value = Encryption.decryption(value, 2, -2);
 				userProfileData.replace(key, value);
+				if(print)
 				System.out.println(key +":"+ value);
 			}
 
         }
 	}
 	
-	private static void readSiteData() 
+	private static void readSiteData(boolean print) 
 	{
 		
 		Iterator<String> keys = userSiteData.keySet().iterator();
@@ -252,7 +269,8 @@ public class LogIn {
 			String value = values.next();
 
 			value = Encryption.decryption(value, 2, -2);
-			userProfileData.replace(key, value);
+			userSiteData.replace(key, value);
+			if(print)
 			System.out.println(key +":"+ value);
 
         }
@@ -272,5 +290,61 @@ public class LogIn {
 			System.out.println("Done");
 		}
 	}
-	
+	private static void modifyProfile() 
+	{
+		readProfile(false);
+		System.out.println("What do you want to Edit?");
+		System.out.println("0. Cancel");
+		System.out.println("1. Your Password");
+		System.out.println("2. Your Email");
+		System.out.println("3. Your Birth Year");
+		System.out.println("4. Your Name");
+		int operation = input.nextInt();
+		input.nextLine(); // for the bug
+		switch (operation) {
+		case 0 :
+			return;
+		case 1:
+			// retype past password
+			System.out.println("Enter new Password");
+			String password = input.nextLine();
+			userProfileData.replace("LogPass", password);
+			//logout
+			break;
+		case 2:
+			System.out.println("Enter new Email");
+			String email = input.nextLine();
+			userProfileData.replace("Email", email);
+			break;
+		case 3:
+			System.out.println("Enter new Year Of Birth");
+			String year = input.nextLine();
+			userProfileData.replace("YearOfBirth", year);
+			break;
+		case 4:
+			System.out.println("Enter new Name");
+			String name = input.nextLine();
+			userProfileData.replace("Name", name);
+			break;
+		default:
+			System.out.println("Not Vaild");
+			break;
+		}
+		// could change only 1 (write once) not REWRITE all 
+		Iterator<String> keys = userProfileData.keySet().iterator();
+		Iterator<String> values = userProfileData.values().iterator();
+		String data = "";
+		while(keys.hasNext()) 
+        {
+			String key = keys.next();
+			String value = values.next();
+
+			value = Encryption.encryption(value, 2, -2);
+			userProfileData.replace(key, value); // NOT IMPORTANT ALSO FOR MOST LIKE IT. otherwise if can write throw map directly
+			data += (key +":"+ value+ "\n");
+        }
+		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+		File log = new File(path+"\\"+dataModel.getLogname()+".pm");
+		FileControl.write(log, data);
+	}
 }

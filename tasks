@@ -48,5 +48,10 @@ decry -> int length = part1.length() + part2.length();
 	    	return;
 	
 	//TODO save generated pass in files inside the user folder , encrypted , with some details , could read directly throw the app (decrypted)
-	
-	
+	LI ->
+	//		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+//		File file = new File(path + "\\" + dataModel.getLogname() + ".pm");
+
+// CreateUser.writeOperation(dataModel); // map store | remove final and make setter & encryption
+
+

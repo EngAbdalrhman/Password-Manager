@@ -68,7 +68,7 @@ public class CreateUser {
 	
 	// modify profile
 	
-	static void writeOperation (DataModel dataModel) 
+	public static void writeOperation (DataModel dataModel) 
 	{
 		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
 		File dir = new File(path);
@@ -81,7 +81,7 @@ public class CreateUser {
 		FileControl.write(log, data);
 	}
 	
-	static void readOperation (DataModel dataModel) 
+	public static void readOperation (DataModel dataModel) 
 	{
 		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
 		File dir = new File(path);
