@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Scanner;
 
-import passwordmanager.encryption.Encryption;
+import passwordmanager.cryptography.Cryptography;
 import passwordmanager.filecontroler.FileControl;
 
 public class CreateUser {
@@ -16,13 +16,13 @@ public class CreateUser {
 		//TODO SQL passing || files
 	static DataModel model;
 	
-	public static void main(String[] args) {	
+	public static void createUser() {	
 		Scanner input = new Scanner(System.in);
 		
 		System.out.println("Enter The LogName");
 		String logname = input.nextLine();
 		// fast fail
-		 File log = new File("D:\\projects\\passmanager\\"+logname+"\\"+logname+".pm");
+		 File log = new File(Consts.path+logname+"\\"+logname+".pm");
 		    if(log.exists())
 		    {
 		    	System.out.println("User exist");
@@ -50,11 +50,11 @@ public class CreateUser {
 	// LOG data
 	public static String dataModel(DataModel dataModel)
 	{
-		String lognameencrypted =  Encryption.encryption(dataModel.getLogname(),2,-2);
-		String logpassencrypted =  Encryption.encryption(dataModel.getLogpass(),2,-2);
-		String nameencrypted = Encryption.encryption(dataModel.getName(),2,-2);
-		String mailencrypted = Encryption.encryption(dataModel.getEmail(),2,-2);
-		String yearencrypted = Encryption.encryption(dataModel.getYearOfBirth(),2,-2);
+		String lognameencrypted =  Cryptography.encryption(dataModel.getLogname(),Consts.k1,Consts.k2);
+		String logpassencrypted =  Cryptography.encryption(dataModel.getLogpass(),Consts.k1,Consts.k2);
+		String nameencrypted = Cryptography.encryption(dataModel.getName(),Consts.k1,Consts.k2);
+		String mailencrypted = Cryptography.encryption(dataModel.getEmail(),Consts.k1,Consts.k2);
+		String yearencrypted = Cryptography.encryption(dataModel.getYearOfBirth(),Consts.k1,Consts.k2);
 		
 		String txt = ("LogName:" + lognameencrypted+ "\n");
 		txt += ("LogPass:" + logpassencrypted+ "\n");
@@ -70,7 +70,7 @@ public class CreateUser {
 	
 	public static void writeOperation (DataModel dataModel) 
 	{
-		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+		String path = Consts.path+dataModel.getLogname();
 		File dir = new File(path);
 	        if (!dir.exists()) 
 	            dir.mkdir();
@@ -83,7 +83,7 @@ public class CreateUser {
 	
 	public static void readOperation (DataModel dataModel) 
 	{
-		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+		String path = Consts.path+dataModel.getLogname();
 		File dir = new File(path);
 	        if (!dir.exists()) 
 	        	return;

@@ -52,10 +52,12 @@ public class FileControl {
 	
 	private static void printAll(List<String> data) 
 	{
-		int i = 0;
+		// int i = 0;
 		userData = new HashMap<String,String>();
 		for (String str : data) {
 			//System.out.println(str);
+			if(str.contains(":"+File.separator))
+			str = str.replace(":"+File.separator, ";" +File.separator);// to avoid path split
 			String[] arr =str.split(":");
 			// 0 for key 1 for value
 			userData.put(arr[0], arr[1]);

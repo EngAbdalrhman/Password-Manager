@@ -54,4 +54,7 @@ decry -> int length = part1.length() + part2.length();
 
 // CreateUser.writeOperation(dataModel); // map store | remove final and make setter & encryption
 
+// change to normal method that call it in the main app
+
+main - > 		// TODO switch to create or login
 

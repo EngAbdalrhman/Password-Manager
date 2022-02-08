@@ -1,6 +1,6 @@
-package passwordmanager.encryption;
+package passwordmanager.cryptography;
 
-public class Encryption {
+public class Cryptography {
 	final static private int key1 = 2 , key2 = -2; // save it or fixed ?
 	// enc -> sympol key+20 , upper -> 2*key , down ->key , rearange & for decry -> opp. ThEN ENCR ALL
 	private static String algorithm(String txt, int key) {

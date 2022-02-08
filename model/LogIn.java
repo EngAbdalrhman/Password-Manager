@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
-import passwordmanager.encryption.Encryption;
+import passwordmanager.cryptography.Cryptography;
 import passwordmanager.filecontroler.FileControl;
 import passwordmanager.generate.PassGenerator;
 
@@ -16,7 +16,7 @@ public class LogIn {
 	static boolean authentication = false;
 	static Scanner input;
 	
-	public static void main(String[] args) { // change to normal method that call it in the main app
+	public static void logIn() { 
 		input = new Scanner(System.in);
 		
 		System.out.println("Enter The user");
@@ -38,7 +38,7 @@ public class LogIn {
 	}
 	static boolean Verify (String user , String password) 
 	{
-		String path = "D:\\projects\\passmanager\\"+user;
+		String path = Consts.path+user;
 		File dir = new File(path);
 	        if (!dir.exists()) 
 	           return false;
@@ -46,8 +46,9 @@ public class LogIn {
 	        
 	        userProfileData = FileControl.read(file);
 	        // fix key algorithm
-	        userProfileData.replace("LogName", Encryption.decryption(userProfileData.get("LogName"), 2, -2));
-	        userProfileData.replace("LogPass", Encryption.decryption(userProfileData.get("LogPass"), 2, -2));
+	        //TODO readprofile and decrypt all once.
+	        userProfileData.replace("LogName", Cryptography.decryption(userProfileData.get("LogName"), Consts.k1, Consts.k2));
+	        userProfileData.replace("LogPass", Cryptography.decryption(userProfileData.get("LogPass"), Consts.k1, Consts.k2));
 	        
 			if (userProfileData.containsValue(user) && userProfileData.containsValue(password))
 			{
@@ -78,7 +79,7 @@ public class LogIn {
 				addSite();
 			break;
 			case 2 :
-				searchSite();
+				searchSite();//TODO check if site not exist
 			break;
 			case 3 :
 				modifySite();
@@ -106,13 +107,13 @@ public class LogIn {
 		String site = input.nextLine();
 		dataModel.setSite(site);
 		
-		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+		String path = Consts.path+dataModel.getLogname();
 		File file = new File(path+"\\"+dataModel.getSite()+".pm");
 		file.delete();
 	}
 	private static void modifySite() {
 		System.out.println("What is the Site?");
-		String pastSite = input.nextLine();
+		String pastSite = input.nextLine();//TODO check if exist
 		dataModel.setSite(pastSite);
 		readOperation ();
 		System.out.println("What do u want to edit");
@@ -123,7 +124,7 @@ public class LogIn {
 		input.nextLine(); // for the bug
 		String pass , user , email;
 		String year = userProfileData.get("YearOfBirth");
-		year = Encryption.decryption(year, 2, -2);
+		year = Cryptography.decryption(year, Consts.k1, Consts.k2);
 		userProfileData.replace("YearOfBirth", year);
 		readSiteData(false);
 		
@@ -134,7 +135,7 @@ public class LogIn {
 				userSiteData.replace("UserName", user);
 				dataModel.setUserName(user);
 				email = userSiteData.get("Email");
-				email = Encryption.decryption(email, 2, -2);
+				email = Cryptography.decryption(email, Consts.k1, Consts.k2);
 				dataModel.setSite(pastSite);
 				dataModel.setOtherEmail(email);
 				pass = PassGenerator.generator(pastSite,user,email,year);
@@ -147,7 +148,7 @@ public class LogIn {
 				userSiteData.replace("Email", email);
 				dataModel.setOtherEmail(email);
 				user = userSiteData.get("UserName");
-				user = Encryption.decryption(user, 2, -2);
+				user = Cryptography.decryption(user, Consts.k1, Consts.k2);
 				dataModel.setUserName(user);
 				dataModel.setSite(pastSite);
 				pass = PassGenerator.generator(pastSite,user,email,year);
@@ -160,15 +161,15 @@ public class LogIn {
 				userSiteData.replace("Site", site);
 				dataModel.setSite(site);
 				user = userSiteData.get("UserName");
-				user = Encryption.decryption(user, 2, -2);
+				user = Cryptography.decryption(user, Consts.k1, Consts.k2);
 				email = userSiteData.get("Email");
-				email = Encryption.decryption(email, 2, -2);
+				email = Cryptography.decryption(email, Consts.k1, Consts.k2);
 				dataModel.setUserName(user);
 				dataModel.setOtherEmail(email);
 				pass = PassGenerator.generator(site,user,email,year);
 				dataModel.setPassword(pass);
 				
-				String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+				String path = Consts.path+dataModel.getLogname();
 				File file = new File(path+"\\"+pastSite+".pm");
 				
 				writeOperation();
@@ -193,7 +194,7 @@ public class LogIn {
 		String email = input.nextLine(); //TODO check the regex (fast fail)
 		System.out.println("Enter The user");
 		String user = input.nextLine();
-		userProfileData.replace("YearOfBirth", Encryption.decryption(userProfileData.get("YearOfBirth"), 2, -2));
+		userProfileData.replace("YearOfBirth", Cryptography.decryption(userProfileData.get("YearOfBirth"), Consts.k1, Consts.k2));
 		
 		String pass = PassGenerator.generator(site,user,email,userProfileData.get("YearOfBirth"));
 		
@@ -206,10 +207,10 @@ public class LogIn {
 	}
 	private static  String info() 
 	{ 
-		String site = Encryption.encryption(dataModel.getSite(), 2, -2);
-		String user = Encryption.encryption(dataModel.getUserName(), 2, -2);
-		String email = Encryption.encryption(dataModel.getOtherEmail(), 2, -2);
-		String pass = Encryption.encryption(dataModel.getPassword(), 2, -2);
+		String site = Cryptography.encryption(dataModel.getSite(), Consts.k1, Consts.k2);
+		String user = Cryptography.encryption(dataModel.getUserName(), Consts.k1, Consts.k2);
+		String email = Cryptography.encryption(dataModel.getOtherEmail(), Consts.k1, Consts.k2);
+		String pass = Cryptography.encryption(dataModel.getPassword(), Consts.k1, Consts.k2);
 		
 		String txt = ("Site:" + site + "\n");
 		txt += ("Email:" + email+ "\n");
@@ -220,7 +221,7 @@ public class LogIn {
 	}
 	private static void writeOperation () 
 	{
-		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+		String path = Consts.path+dataModel.getLogname();
 		
 		File file = new File(path+"\\"+dataModel.getSite()+".pm");
 		String data = info();
@@ -229,7 +230,7 @@ public class LogIn {
 	
 	private static void readOperation () 
 	{
-		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+		String path = Consts.path+dataModel.getLogname();
 		File dir = new File(path);
 	        if (!dir.exists()) 
 	        	return;
@@ -249,7 +250,7 @@ public class LogIn {
 				System.out.println(key +":"+ value);
 			else
 			{
-				value = Encryption.decryption(value, 2, -2);
+				value = Cryptography.decryption(value, Consts.k1, Consts.k2);
 				userProfileData.replace(key, value);
 				if(print)
 				System.out.println(key +":"+ value);
@@ -268,7 +269,7 @@ public class LogIn {
 			String key = keys.next();
 			String value = values.next();
 
-			value = Encryption.decryption(value, 2, -2);
+			value = Cryptography.decryption(value, Consts.k1, Consts.k2);
 			userSiteData.replace(key, value);
 			if(print)
 			System.out.println(key +":"+ value);
@@ -278,7 +279,7 @@ public class LogIn {
 	
 	private static void removeProfile() {
 
-		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+		String path = Consts.path+dataModel.getLogname();
 		File file = new File(path);
 		System.out.println("Confirm Password");
 		String pass = input.nextLine();
@@ -339,11 +340,11 @@ public class LogIn {
 			String key = keys.next();
 			String value = values.next();
 
-			value = Encryption.encryption(value, 2, -2);
+			value = Cryptography.encryption(value, Consts.k1, Consts.k2);
 			userProfileData.replace(key, value); // NOT IMPORTANT ALSO FOR MOST LIKE IT. otherwise if can write throw map directly
 			data += (key +":"+ value+ "\n");
         }
-		String path = "D:\\projects\\passmanager\\"+dataModel.getLogname();
+		String path = Consts.path+dataModel.getLogname();
 		File log = new File(path+"\\"+dataModel.getLogname()+".pm");
 		FileControl.write(log, data);
 	}
