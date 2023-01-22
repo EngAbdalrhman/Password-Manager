@@ -2,7 +2,7 @@ package passwordmanager.generate;
 
 public class PassGenerator {
 	//twitter + email + date + user = Tweedy@am30#1$7 (site+user+symbol+email+symbol+date)
-	// Symbols {#(year)@(user)$(day)}
+	// Symbols {#(year)@(user)$(month)}
 	// user = speedy , email = ambdo30@g , date = 2001/7
 	//TODO Rearrange parts to generate more
 	//TODO use Arabic letters 
