@@ -117,7 +117,7 @@ public class GetPass {
 		FileControl.write(info, data);
 		System.out.println("Done");
 	}
-	private static String data(String path , int key1 , int key2) {
+	public static String data(String path , int key1 , int key2) {
 		String txt = ("Path:" + path +"\n");
 		txt += ("K1:" + key1 +"\n");
 		txt += ("K2:" + key2 +"\n");

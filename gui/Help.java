@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 public class Help {
 
-	private JFrame frame;
+	JFrame hframe;
 
 	/**
 	 * Launch the application.
@@ -16,7 +16,7 @@ public class Help {
 			public void run() {
 				try {
 					Help window = new Help();
-					window.frame.setVisible(true);
+					window.hframe.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,9 +35,9 @@ public class Help {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		hframe = new JFrame();
+		hframe.setBounds(100, 100, 450, 300);
+		hframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 }

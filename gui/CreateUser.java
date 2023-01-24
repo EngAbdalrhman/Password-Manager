@@ -13,10 +13,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+import java.awt.Color;
 
 public class CreateUser {
 
-	private JFrame frame;
+	JFrame frame;
 	private JTextField textField;
 	Image see = null;
 	Image hide = null;
@@ -24,6 +25,8 @@ public class CreateUser {
 	boolean isHide = false;
 	private JPasswordField passwordField;
 	String txthide = "unhide";
+	private JTextField textField_1;
+	private JTextField textField_2;
 	
 	/**
 	 * Launch the application.
@@ -53,25 +56,29 @@ public class CreateUser {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 314, 252);
+		frame.setBounds(100, 100, 314, 302);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(147, 44, 86, 20);
+		textField.setBounds(93, 44, 140, 20);
 		frame.getContentPane().add(textField);
 		
-		JLabel label = new JLabel("user");
-		label.setBounds(47, 47, 46, 14);
-		frame.getContentPane().add(label);
+		JLabel lblUsername = new JLabel("username");
+		lblUsername.setBounds(10, 47, 73, 14);
+		frame.getContentPane().add(lblUsername);
 		
 		JLabel label_1 = new JLabel("password");
-		label_1.setBounds(47, 78, 46, 14);
+		label_1.setBounds(10, 72, 66, 14);
 		frame.getContentPane().add(label_1);
 		
 		JButton btnCreate = new JButton("create");
-		btnCreate.setBounds(101, 132, 89, 23);
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnCreate.setBounds(51, 191, 89, 23);
 		frame.getContentPane().add(btnCreate);
 		
 
@@ -90,7 +97,7 @@ public class CreateUser {
 			 hide = ImageIO.read(getClass().getResource("images\\hide.png"));
 			 hideIcon = new ImageIcon(hide); // load the image to a imageIcon
 			 image = hideIcon.getImage(); // transform it 
-			 image = GuiFunction.getScaledImage(image, 35, 35);
+			 image = GuiFunction.getScaledImage(image, 30, 30);
 			 hideIcon = new ImageIcon(image);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -129,8 +136,47 @@ public class CreateUser {
 		frame.getContentPane().add(btnNewButton);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(147, 75, 86, 20);
+		passwordField.setBounds(93, 75, 140, 20);
 		frame.getContentPane().add(passwordField);
+		
+		JButton btnNewButton_1 = new JButton("Login");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login l = new Login();
+				l.frmLogin.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
+		btnNewButton_1.setBounds(143, 191, 89, 23);
+		frame.getContentPane().add(btnNewButton_1);
+		
+		JLabel lblNewLabel = new JLabel("User Exist!");
+		lblNewLabel.setForeground(Color.RED);
+		lblNewLabel.setBounds(10, 225, 271, 14);
+		frame.getContentPane().add(lblNewLabel);
+		lblNewLabel.setVisible(false);
+		
+		JLabel lblNewLabel_1 = new JLabel("Name");
+		lblNewLabel_1.setBounds(10, 116, 66, 14);
+		frame.getContentPane().add(lblNewLabel_1);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(93, 113, 140, 20);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("Email");
+		lblNewLabel_2.setBounds(10, 141, 66, 14);
+		frame.getContentPane().add(lblNewLabel_2);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(93, 144, 140, 20);
+		frame.getContentPane().add(textField_2);
+		textField_2.setColumns(10);
+		
+		JLabel lblNewLabel_3 = new JLabel("Birth DATE");
+		lblNewLabel_3.setBounds(10, 166, 66, 14);
+		frame.getContentPane().add(lblNewLabel_3);
 	}
 	
 }

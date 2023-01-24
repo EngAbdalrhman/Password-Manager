@@ -5,18 +5,25 @@ import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+import passwordmanager.model.LogIn;
+
 import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
+import java.awt.Color;
 
 public class Login {
 
-	private JFrame frmLogin;
+	JFrame frmLogin;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	Image see = null;
@@ -24,6 +31,8 @@ public class Login {
 	ImageIcon seeIcon = null , hideIcon = null;
 	boolean isHide = false;
 	String txthide = "unhide";
+	boolean ckState = false;
+	boolean authentication = false;
 	/**
 	 * Launch the application.
 	 */
@@ -58,24 +67,64 @@ public class Login {
 		frmLogin.getContentPane().setLayout(null);
 		
 		textField = new JTextField();
-		textField.setBounds(122, 67, 86, 20);
+		textField.setBounds(95, 67, 113, 20);
 		frmLogin.getContentPane().add(textField);
 		textField.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2.setForeground(Color.RED);
+		lblNewLabel_2.setBounds(22, 221, 275, 14);
+		frmLogin.getContentPane().add(lblNewLabel_2);
+		lblNewLabel_2.setVisible(false);
 		
 		JLabel lblNewLabel = new JLabel("user");
 		lblNewLabel.setBounds(22, 70, 46, 14);
 		frmLogin.getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("password");
-		lblNewLabel_1.setBounds(22, 101, 46, 14);
+		lblNewLabel_1.setBounds(22, 101, 63, 14);
 		frmLogin.getContentPane().add(lblNewLabel_1);
 		
-		JButton btnNewButton = new JButton("Log");
-		btnNewButton.setBounds(76, 155, 89, 23);
+		JButton btnNewButton = new JButton("Log in");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String user = textField.getText();
+				char[] cp = passwordField.getPassword();
+				String pass = "";
+				for (int i = 0; i < cp.length; i++) {
+					pass+= cp[i];
+				}
+				authentication = GuiFunction.Verify(user,pass);
+				if(!authentication)
+				{
+					lblNewLabel_2.setVisible(true);
+					lblNewLabel_2.setText("Username or Password are incorrect!");
+				}
+				else
+				{
+					// check box save login
+					if(ckState)
+					{
+						GuiFunction.userProfileData.put("SaveLog", "Y");
+						GuiFunction.writeOperation();
+					}
+					else
+					{
+						GuiFunction.userProfileData.put("SaveLog", "N");
+						GuiFunction.writeOperation();
+					}
+					
+					Main m = new Main();
+					m.frmDashboard.setVisible(true);
+					frmLogin.setVisible(false);
+				}
+			}
+		});
+		btnNewButton.setBounds(42, 176, 89, 23);
 		frmLogin.getContentPane().add(btnNewButton);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(122, 101, 86, 20);
+		passwordField.setBounds(95, 101, 113, 20);
 		frmLogin.getContentPane().add(passwordField);
 		
 		Image image = null;
@@ -83,12 +132,12 @@ public class Login {
 			 see = ImageIO.read(getClass().getResource("images\\see.png"));
 			 seeIcon = new ImageIcon(see); // load the image to a imageIcon
 			 image = seeIcon.getImage(); // transform it 
-			 image = GuiFunction.getScaledImage(image, 35, 35);
+			 image = GuiFunction.getScaledImage(image, 30, 30);
 			 seeIcon = new ImageIcon(image);
 			 hide = ImageIO.read(getClass().getResource("images\\hide.png"));
 			 hideIcon = new ImageIcon(hide); // load the image to a imageIcon
 			 image = hideIcon.getImage(); // transform it 
-			 image = GuiFunction.getScaledImage(image, 35, 35);
+			 image = GuiFunction.getScaledImage(image, 30, 30);
 			 hideIcon = new ImageIcon(image);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -124,5 +173,29 @@ public class Login {
 		});
 		button.setBounds(233, 97, 38, 23);
 		frmLogin.getContentPane().add(button);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Save Login");
+		chckbxNewCheckBox.setBounds(22, 140, 186, 23);
+		frmLogin.getContentPane().add(chckbxNewCheckBox);
+		
+		chckbxNewCheckBox.addItemListener(new ItemListener() {    
+            public void itemStateChanged(ItemEvent e) {                 
+               
+            	ckState = e.getStateChange() == 1 ?  true : false;    
+            }    
+         });    
+		JButton btnNewButton_1 = new JButton("Sign up");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CreateUser cu = new CreateUser();
+				cu.frame.setVisible(true);
+				frmLogin.setVisible(false);
+			}
+		});
+		btnNewButton_1.setBounds(152, 176, 89, 23);
+		frmLogin.getContentPane().add(btnNewButton_1);
+		
+		
+		
 	}
 }

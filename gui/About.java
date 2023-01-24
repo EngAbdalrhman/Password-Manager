@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 public class About {
 
-	private JFrame frame;
+	JFrame about;
 
 	/**
 	 * Launch the application.
@@ -16,7 +16,7 @@ public class About {
 			public void run() {
 				try {
 					About window = new About();
-					window.frame.setVisible(true);
+					window.about.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,9 +35,9 @@ public class About {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		about = new JFrame();
+		about.setBounds(100, 100, 450, 300);
+		about.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 }

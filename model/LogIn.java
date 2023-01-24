@@ -17,6 +17,7 @@ public class LogIn {
 	static Scanner input;
 	
 	public static void logIn() { 
+		// TODO Seperate all methods
 		input = new Scanner(System.in);
 		
 		System.out.println("Enter The user");
@@ -36,7 +37,7 @@ public class LogIn {
 		}
 		
 	}
-	static boolean Verify (String user , String password) 
+	private static boolean Verify (String user , String password) 
 	{
 		String path = Consts.path+user;
 		File dir = new File(path);
@@ -123,6 +124,7 @@ public class LogIn {
 		int operation = input.nextInt();
 		input.nextLine(); // for the bug
 		String pass , user , email;
+		// to decrypte the year of birth to use it
 		String year = userProfileData.get("YearOfBirth");
 		year = Cryptography.decryption(year, Consts.k1, Consts.k2);
 		userProfileData.replace("YearOfBirth", year);
@@ -205,6 +207,7 @@ public class LogIn {
 		writeOperation();
 		System.out.println("Done!");
 	}
+	
 	private static  String info() 
 	{ 
 		String site = Cryptography.encryption(dataModel.getSite(), Consts.k1, Consts.k2);
@@ -250,8 +253,11 @@ public class LogIn {
 				System.out.println(key +":"+ value);
 			else
 			{
-				value = Cryptography.decryption(value, Consts.k1, Consts.k2);
-				userProfileData.replace(key, value);
+				if(key != "SaveLog") 
+				{
+					value = Cryptography.decryption(value, Consts.k1, Consts.k2);
+					userProfileData.replace(key, value);
+				}
 				if(print)
 				System.out.println(key +":"+ value);
 			}
