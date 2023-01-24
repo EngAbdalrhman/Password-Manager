@@ -6,6 +6,9 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import passwordmanager.GetPass;
+import passwordmanager.filecontroler.FileControl;
+import passwordmanager.model.Consts;
 import passwordmanager.model.LogIn;
 
 import javax.swing.JLabel;
@@ -16,6 +19,7 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
@@ -103,16 +107,30 @@ public class Login {
 				else
 				{
 					// check box save login
+					String path = "\\bin\\";
+					File info = new File(path + "inf.pm");
+					String dpath  = Consts.path;
+					int k1 = Consts.k1, k2 = Consts.k2;
+
+					String data = GetPass.data(dpath,k1,k2);
+					
 					if(ckState)
 					{
+						
+						data += "SaveLog:" +GuiFunction.userProfileData.get("LogName")+"\n";
+												
 						GuiFunction.userProfileData.put("SaveLog", "Y");
-						GuiFunction.writeOperation();
+						GuiFunction.writeProfile();
 					}
 					else
 					{
+						data += "SaveLog:" +"NULL"+"\n";
+						
 						GuiFunction.userProfileData.put("SaveLog", "N");
-						GuiFunction.writeOperation();
+						GuiFunction.writeProfile();
 					}
+					
+					FileControl.write(info, data);
 					
 					Main m = new Main();
 					m.frmDashboard.setVisible(true);

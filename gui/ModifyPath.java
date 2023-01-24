@@ -110,7 +110,6 @@ public class ModifyPath {
 				chooser = new JFileChooser();
 				fileChooser(chooser);
 				
-		
 			    chooser.setVisible(true);
 			}
 		});
@@ -139,10 +138,7 @@ public class ModifyPath {
 	    if (chooser.showOpenDialog(pathFrame) == JFileChooser.APPROVE_OPTION) { 
 	      choosertitle = chooser.getSelectedFile().toString();
 	      textField.setText(choosertitle);
-	     /* System.out.println("getCurrentDirectory(): " 
-	         +  chooser.getCurrentDirectory());
-	      System.out.println("getSelectedFile() : " 
-	         +  choosertitle);*/
+	     
 	      }
 	    else {
 	      System.out.println("No Selection ");

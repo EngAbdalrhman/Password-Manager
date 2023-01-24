@@ -7,6 +7,7 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 
 import passwordmanager.GetPass;
+import passwordmanager.cryptography.Cryptography;
 import passwordmanager.filecontroler.FileControl;
 import passwordmanager.model.Consts;
 
@@ -26,7 +27,7 @@ public class Window {
 	JMenuItem key1,key2,path,about,help1;    
 	private JProgressBar progressBar;
 	JButton btnNewButton , btnNewButton_1;
-	
+	Thread t;
 	/**
 	 * Launch the application.
 	 */
@@ -50,14 +51,45 @@ public class Window {
 	 */
 	public Window() {
 		initialize();
-		Thread t = new Thread(new Runnable() {
+		Thread t2 = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
+				// TODO Auto-generated method stub
+				String save = Consts.savedUser;
+				if(save.equals("NULL") || save == null)
+				{
+					progressBar.setValue(100);
+				}
+				else
+				{
+					String path = Consts.path+save;
+			        File file = new File(path+"\\"+save+".pm");
+			        
+			        GuiFunction.userProfileData = FileControl.read(file);
+			        
+			        GuiFunction.userProfileData.replace("LogName", Cryptography.decryption(GuiFunction.userProfileData.get("LogName"), Consts.k1, Consts.k2));
+			        GuiFunction.userProfileData.replace("LogPass", Cryptography.decryption(GuiFunction.userProfileData.get("LogPass"), Consts.k1, Consts.k2));
+			        
+					Main m = new Main();
+					m.frmDashboard.setVisible(true);
+					frmPasswordManager.setVisible(false);
+					
+				}
+			}
+		});
+		
+		t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				t2.start();
+				progressBar.setVisible(true);
+				
 				for (int i = 0; i <= 100; i++) {
 					progressBar.setValue(i);
 					try {
-						Thread.sleep(50);
+						Thread.sleep(20);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -65,6 +97,7 @@ public class Window {
 					
 					if(progressBar.getValue()<100)
 					{
+						progressBar.setVisible(true);
 						btnNewButton_1.setVisible(false);
 						btnNewButton.setVisible(false);
 					}
@@ -72,24 +105,20 @@ public class Window {
 					{
 						btnNewButton_1.setVisible(true);
 						btnNewButton.setVisible(true);
+						progressBar.setVisible(false);
 					}
 				}
 			}
 		});
 		t.start();
+		
+		
+		
+		
 		// check save log
 		// TODO save on initial info log name not in user profile
-		String save = GuiFunction.userProfileData.get("SaveLog");
-		if(save.equals("Y"))
-		{
-			Main m = new Main();
-			m.frmDashboard.setVisible(true);
-			frmPasswordManager.setVisible(false);
-		}
-		else
-		{
-			progressBar.setValue(100);
-		}
+		
+		
 	}
 
 	/**

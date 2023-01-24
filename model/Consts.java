@@ -13,4 +13,5 @@ public interface Consts {
 	int k1 = Integer.valueOf(pinfo.get("K1"));
 	int k2 = Integer.valueOf(pinfo.get("K2"));
 	
+	String savedUser = pinfo.get("SaveLog");
 }

@@ -30,7 +30,7 @@ public class GuiFunction {
 	}
 	
 	
-	static void writeOperation () 
+	static void writeProfile () 
 	{
 		Iterator<String> keys = userProfileData.keySet().iterator();
 		Iterator<String> values = userProfileData.values().iterator();
@@ -39,7 +39,7 @@ public class GuiFunction {
         {
 			String key = keys.next();
 			String value = values.next();
-			
+			// TODO handle all
 			if(key.equals("LogName")  || key.equals("LogPass")) 
 			{
 				value = Cryptography.encryption(value, Consts.k1, Consts.k2);

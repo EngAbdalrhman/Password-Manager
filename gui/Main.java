@@ -10,6 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import passwordmanager.GetPass;
+import passwordmanager.cryptography.Cryptography;
 import passwordmanager.filecontroler.FileControl;
 import passwordmanager.model.Consts;
 
@@ -95,18 +96,32 @@ public class Main {
 		JButton btnNewButton_7 = new JButton("Logout");
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// remove save login
+				// TODO remove save login & LOGOUT WITHOUT RESTART
+				String path = "\\bin\\";
+				File info = new File(path + "inf.pm");
+				String dpath  = Consts.path;
+				int k1 = Consts.k1, k2 = Consts.k2;
+
+				String data = GetPass.data(dpath,k1,k2);
+				
 				Window w = new Window();
 				w.frmPasswordManager.setVisible(true);
 				frmDashboard.setVisible(false);
+				// w.t.start();
+				
+				data += "SaveLog:" +"NULL"+"\n";
+
+				FileControl.write(info, data);
 			}
 		});
 		btnNewButton_7.setBounds(147, 216, 89, 23);
 		frmDashboard.getContentPane().add(btnNewButton_7);
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
+		// TODO DECRYPT - without restart
+		// Cryptography.decryption(GuiFunction.userProfileData.get("LogName"), Consts.k1, Consts.k2)
+		JLabel lblNewLabel_1 = new JLabel(GuiFunction.userProfileData.get("LogName"));
 		lblNewLabel_1.setForeground(Color.RED);
 		lblNewLabel_1.setBounds(100, 26, 136, 14);
+		
 		frmDashboard.getContentPane().add(lblNewLabel_1);
 		
 		JMenuBar menuBar = new JMenuBar();

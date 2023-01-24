@@ -5,6 +5,9 @@ import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+import passwordmanager.model.ModelBuilder;
+
 import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -18,15 +21,16 @@ import java.awt.Color;
 public class CreateUser {
 
 	JFrame frame;
-	private JTextField textField;
+	private JTextField tFUser;
 	Image see = null;
 	Image hide = null;
 	ImageIcon seeIcon = null , hideIcon = null;
 	boolean isHide = false;
 	private JPasswordField passwordField;
 	String txthide = "unhide";
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField tfName;
+	private JTextField tFMail;
+	private JTextField tFDate;
 	
 	/**
 	 * Launch the application.
@@ -60,10 +64,10 @@ public class CreateUser {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(93, 44, 140, 20);
-		frame.getContentPane().add(textField);
+		tFUser = new JTextField();
+		tFUser.setColumns(10);
+		tFUser.setBounds(93, 44, 140, 20);
+		frame.getContentPane().add(tFUser);
 		
 		JLabel lblUsername = new JLabel("username");
 		lblUsername.setBounds(10, 47, 73, 14);
@@ -73,13 +77,7 @@ public class CreateUser {
 		label_1.setBounds(10, 72, 66, 14);
 		frame.getContentPane().add(label_1);
 		
-		JButton btnCreate = new JButton("create");
-		btnCreate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnCreate.setBounds(51, 191, 89, 23);
-		frame.getContentPane().add(btnCreate);
+		
 		
 
 		//ImageIcon seeIcon = null , hideIcon = null; // load the image to a imageIcon
@@ -160,23 +158,54 @@ public class CreateUser {
 		lblNewLabel_1.setBounds(10, 116, 66, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(93, 113, 140, 20);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		tfName = new JTextField();
+		tfName.setBounds(93, 113, 140, 20);
+		frame.getContentPane().add(tfName);
+		tfName.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Email");
 		lblNewLabel_2.setBounds(10, 141, 66, 14);
 		frame.getContentPane().add(lblNewLabel_2);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(93, 144, 140, 20);
-		frame.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		tFMail = new JTextField();
+		tFMail.setBounds(93, 138, 140, 20);
+		frame.getContentPane().add(tFMail);
+		tFMail.setColumns(10);
 		
 		JLabel lblNewLabel_3 = new JLabel("Birth DATE");
 		lblNewLabel_3.setBounds(10, 166, 66, 14);
 		frame.getContentPane().add(lblNewLabel_3);
+		
+		tFDate = new JTextField();
+		tFDate.setBounds(93, 163, 139, 20);
+		frame.getContentPane().add(tFDate);
+		tFDate.setColumns(10);
+		
+		JButton btnCreate = new JButton("create");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO fast fail and check validation
+				String log = tFUser.getText();
+				String name = tfName.getText();
+				int date =Integer.valueOf(tFDate.getText());
+				String email = tFMail.getText();
+				String password ="";
+				char[] cp = passwordField.getPassword();
+				for (int i = 0; i < cp.length; i++) {
+					password+= cp[i];
+				}
+				
+				GuiFunction.dataModel = new ModelBuilder().name(name)
+						.logname(log)
+						.logpass(password)
+						.email(email)
+						.yearOfBirth(String.valueOf(date)).build();
+				// TODO If not exist return and error.
+				passwordmanager.model.CreateUser.writeOperation(GuiFunction.dataModel);
+			}
+		});
+		btnCreate.setBounds(51, 191, 89, 23);
+		frame.getContentPane().add(btnCreate);
 	}
 	
 }

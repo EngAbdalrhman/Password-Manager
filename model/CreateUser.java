@@ -77,7 +77,7 @@ public class CreateUser {
 	       
 	    File log = new File(path+"\\"+dataModel.getLogname()+".pm");
 	  
-		String data = dataModel(model);
+		String data = dataModel(dataModel);
 		FileControl.write(log, data);
 	}
 	
