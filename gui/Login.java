@@ -114,21 +114,21 @@ public class Login {
 
 					String data = GetPass.data(dpath,k1,k2);
 					
-					if(ckState)
-					{
-						
-						data += "SaveLog:" +GuiFunction.userProfileData.get("LogName")+"\n";
-												
-						GuiFunction.userProfileData.put("SaveLog", "Y");
-						GuiFunction.writeProfile();
-					}
-					else
-					{
-						data += "SaveLog:" +"NULL"+"\n";
-						
-						GuiFunction.userProfileData.put("SaveLog", "N");
-						GuiFunction.writeProfile();
-					}
+//					if(ckState)
+//					{
+//						
+//						data += "SaveLog:" +GuiFunction.userProfileData.get("LogName")+"\n";
+//												
+//						GuiFunction.userProfileData.put("SaveLog", "Y");
+//						GuiFunction.writeProfile();
+//					}
+//					else
+//					{
+//						data += "SaveLog:" +"NULL"+"\n";
+//						
+//						GuiFunction.userProfileData.put("SaveLog", "N");
+//						GuiFunction.writeProfile();
+//					}
 					
 					FileControl.write(info, data);
 					

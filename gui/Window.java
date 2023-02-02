@@ -32,7 +32,7 @@ public class Window {
 	 * Launch the application.
 	 */
 	
-	//TODO save login , process bar to check if already login and hide buttons while checking , if not show button
+	// save login , process bar to check if already login and hide buttons while checking , if not show button
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

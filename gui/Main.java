@@ -57,7 +57,7 @@ public class Main {
 		frmDashboard = new JFrame();
 		frmDashboard.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/passwordmanager/gui/images/lock.ico")));
 		frmDashboard.setTitle("DashBoard");
-		frmDashboard.setBounds(100, 100, 292, 300);
+		frmDashboard.setBounds(100, 100, 403, 300);
 		frmDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmDashboard.getContentPane().setLayout(null);
 		
@@ -66,37 +66,66 @@ public class Main {
 		frmDashboard.getContentPane().add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("add Site");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		btnNewButton.setBounds(29, 72, 89, 23);
 		frmDashboard.getContentPane().add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Modify Site");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnNewButton_1.setBounds(29, 120, 89, 23);
 		frmDashboard.getContentPane().add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("MY Sites");
-		btnNewButton_2.setBounds(147, 72, 89, 23);
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_2.setBounds(29, 172, 89, 23);
 		frmDashboard.getContentPane().add(btnNewButton_2);
 		
 		JButton btnNewButton_3 = new JButton("Remove Site");
-		btnNewButton_3.setBounds(147, 120, 89, 23);
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_3.setBounds(195, 72, 178, 23);
 		frmDashboard.getContentPane().add(btnNewButton_3);
 		
 		JButton btnNewButton_4 = new JButton("View Profile");
-		btnNewButton_4.setBounds(29, 172, 89, 23);
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_4.setBounds(29, 216, 89, 23);
 		frmDashboard.getContentPane().add(btnNewButton_4);
 		
 		JButton btnNewButton_5 = new JButton("Modify Profile");
-		btnNewButton_5.setBounds(147, 172, 89, 23);
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_5.setBounds(195, 172, 178, 23);
 		frmDashboard.getContentPane().add(btnNewButton_5);
 		
 		JButton btnNewButton_6 = new JButton("Delete Profile");
-		btnNewButton_6.setBounds(29, 216, 89, 23);
+		btnNewButton_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_6.setBounds(195, 120, 178, 23);
 		frmDashboard.getContentPane().add(btnNewButton_6);
 		
 		JButton btnNewButton_7 = new JButton("Logout");
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO remove save login & LOGOUT WITHOUT RESTART
+				// remove save login & LOGOUT WITHOUT RESTART
 				String path = "\\bin\\";
 				File info = new File(path + "inf.pm");
 				String dpath  = Consts.path;
@@ -104,19 +133,19 @@ public class Main {
 
 				String data = GetPass.data(dpath,k1,k2);
 				
-				Window w = new Window();
-				w.frmPasswordManager.setVisible(true);
-				frmDashboard.setVisible(false);
 				// w.t.start();
 				
 				data += "SaveLog:" +"NULL"+"\n";
 
 				FileControl.write(info, data);
+				Window w = new Window();
+				w.frmPasswordManager.setVisible(true);
+				frmDashboard.setVisible(false);
 			}
 		});
-		btnNewButton_7.setBounds(147, 216, 89, 23);
+		btnNewButton_7.setBounds(195, 216, 89, 23);
 		frmDashboard.getContentPane().add(btnNewButton_7);
-		// TODO DECRYPT - without restart
+		// DECRYPT - without restart
 		// Cryptography.decryption(GuiFunction.userProfileData.get("LogName"), Consts.k1, Consts.k2)
 		JLabel lblNewLabel_1 = new JLabel(GuiFunction.userProfileData.get("LogName"));
 		lblNewLabel_1.setForeground(Color.RED);
@@ -125,7 +154,7 @@ public class Main {
 		frmDashboard.getContentPane().add(lblNewLabel_1);
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 353, 21);
+		menuBar.setBounds(0, 0, 387, 21);
 		key1=new JMenuItem("Key1");    
 		key2=new JMenuItem("Key2");    
 		path=new JMenuItem("Path");    
